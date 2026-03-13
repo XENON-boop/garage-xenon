@@ -425,7 +425,7 @@
           <div class="table-wrap">
             <table>
               <thead><tr>
-                <th style="text-align:center">Statut</th><th>Immat.</th><th>Véhicule</th><th>Panne déclarée</th>
+                <th style="width:28px"></th><th style="text-align:center">Statut</th><th>Immat.</th><th>Véhicule</th><th>Panne déclarée</th>
                 <th>Client</th><th>Mécanicien</th><th style="text-align:center">Paiement</th><th style="text-align:center">Modifié par</th><th style="text-align:center">Actions</th>
               </tr></thead>
               <tbody id="vehicle-tbody"></tbody>
@@ -1152,70 +1152,102 @@
   }
 
   
-  // ── DRAG & DROP REORDER ─────────────────────────────────────────────────────
+    // ── DRAG & DROP REORDER ─────────────────────────────────────────────────────
   let dragSrcId = null;
-  let dragSrcEl = null;
 
   function initDragDrop() {
-    const tbody = document.querySelector('#vehicles-tbody');
+    const tbody = document.querySelector('#vehicle-tbody');
     if (!tbody) return;
 
     tbody.querySelectorAll('tr[draggable]').forEach(tr => {
       const handle = tr.querySelector('.drag-handle');
 
-      // ── Desktop drag events ──
-      handle.addEventListener('mousedown', () => { tr.draggable = true; });
+      // Prevent row click when using handle
+      handle.addEventListener('click', e => e.stopPropagation());
+
+      // ── Desktop ──
+      handle.addEventListener('mousedown', e => { e.stopPropagation(); });
+
       tr.addEventListener('dragstart', e => {
         dragSrcId = tr.dataset.id;
-        dragSrcEl = tr;
-        setTimeout(() => tr.classList.add('dragging'), 0);
         e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', tr.dataset.id);
+        setTimeout(() => tr.classList.add('dragging'), 0);
       });
+
       tr.addEventListener('dragend', () => {
         tr.classList.remove('dragging');
         tbody.querySelectorAll('tr').forEach(r => r.classList.remove('drag-over'));
       });
+
       tr.addEventListener('dragover', e => {
         e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
         tbody.querySelectorAll('tr').forEach(r => r.classList.remove('drag-over'));
         if (tr.dataset.id !== dragSrcId) tr.classList.add('drag-over');
       });
-      tr.addEventListener('drop', e => {
-        e.preventDefault();
+
+      tr.addEventListener('dragleave', () => {
         tr.classList.remove('drag-over');
-        if (!dragSrcId || tr.dataset.id === dragSrcId) return;
-        swapRows(dragSrcId, tr.dataset.id);
       });
 
-      // ── Touch events (mobile) ──
-      let touchY = 0;
+      tr.addEventListener('drop', e => {
+        e.preventDefault();
+        e.stopPropagation();
+        tbody.querySelectorAll('tr').forEach(r => r.classList.remove('drag-over'));
+        const targetId = tr.dataset.id;
+        if (!dragSrcId || targetId === dragSrcId) return;
+
+        // Move DOM immediately for visual feedback
+        const srcEl = tbody.querySelector('tr[data-id="' + dragSrcId + '"]');
+        const tgtEl = tbody.querySelector('tr[data-id="' + targetId + '"]');
+        if (srcEl && tgtEl) {
+          const rows = [...tbody.querySelectorAll('tr')];
+          const srcIdx = rows.indexOf(srcEl);
+          const tgtIdx = rows.indexOf(tgtEl);
+          if (srcIdx < tgtIdx) {
+            tgtEl.after(srcEl);
+          } else {
+            tgtEl.before(srcEl);
+          }
+        }
+
+        swapRows(dragSrcId, targetId);
+      });
+
+      // ── Touch (mobile) ──
       handle.addEventListener('touchstart', e => {
         dragSrcId = tr.dataset.id;
-        dragSrcEl = tr;
-        touchY = e.touches[0].clientY;
         tr.classList.add('dragging');
         e.preventDefault();
       }, { passive: false });
 
       handle.addEventListener('touchmove', e => {
         e.preventDefault();
-        const y = e.touches[0].clientY;
-        const rows = [...tbody.querySelectorAll('tr[draggable]')];
+        const touch = e.touches[0];
         tbody.querySelectorAll('tr').forEach(r => r.classList.remove('drag-over'));
+        const rows = [...tbody.querySelectorAll('tr[draggable]')];
         for (const row of rows) {
           const rect = row.getBoundingClientRect();
-          if (y >= rect.top && y <= rect.bottom && row.dataset.id !== dragSrcId) {
+          if (touch.clientY >= rect.top && touch.clientY <= rect.bottom && row.dataset.id !== dragSrcId) {
             row.classList.add('drag-over');
             break;
           }
         }
       }, { passive: false });
 
-      handle.addEventListener('touchend', e => {
+      handle.addEventListener('touchend', () => {
         tr.classList.remove('dragging');
         const overEl = tbody.querySelector('tr.drag-over');
         tbody.querySelectorAll('tr').forEach(r => r.classList.remove('drag-over'));
         if (overEl && overEl.dataset.id !== dragSrcId) {
+          // Move DOM
+          const srcEl = tbody.querySelector('tr[data-id="' + dragSrcId + '"]');
+          const rows = [...tbody.querySelectorAll('tr')];
+          const srcIdx = rows.indexOf(srcEl);
+          const tgtIdx = rows.indexOf(overEl);
+          if (srcIdx < tgtIdx) overEl.after(srcEl);
+          else overEl.before(srcEl);
           swapRows(dragSrcId, overEl.dataset.id);
         }
         dragSrcId = null;
