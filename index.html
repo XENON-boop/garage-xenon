@@ -686,7 +686,7 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, serverTimestamp, query, orderBy, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey:"AIzaSyBhrUZij7gbbhZFwKMJn-GbvKjb0qW89SQ",
@@ -1260,21 +1260,33 @@
   }
 
   async function swapRows(idA, idB) {
-    const a = vehicles.find(v => v.id === idA);
-    const b = vehicles.find(v => v.id === idB);
-    if (!a || !b) return;
-
-    // Assign positions to all vehicles if not yet set
-    if (vehicles.some(v => v.position === undefined)) {
-      vehicles.forEach((v, i) => { v.position = i * 10; });
-    }
-
-    const posA = a.position ?? vehicles.indexOf(a) * 10;
-    const posB = b.position ?? vehicles.indexOf(b) * 10;
-
     try {
+      // Step 1: if ANY vehicle has no position, assign positions to ALL first
+      if (vehicles.some(v => v.position === undefined)) {
+        const batch = writeBatch(db);
+        vehicles.forEach((v, i) => {
+          v.position = i * 10;
+          batch.update(doc(db, 'vehicles', v.id), { position: i * 10 });
+        });
+        await batch.commit();
+      }
+
+      // Step 2: swap positions of the two vehicles in local array
+      const a = vehicles.find(v => v.id === idA);
+      const b = vehicles.find(v => v.id === idB);
+      if (!a || !b) return;
+
+      const posA = a.position;
+      const posB = b.position;
+
+      // Update local state immediately
+      a.position = posB;
+      b.position = posA;
+
+      // Step 3: save to Firebase
       await updateDoc(doc(db, 'vehicles', idA), { position: posB });
       await updateDoc(doc(db, 'vehicles', idB), { position: posA });
+
       showToast('✅ Ordre mis à jour');
     } catch(e) {
       showToast('❌ ' + e.message, 'error');
