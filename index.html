@@ -338,6 +338,20 @@
     .stat-value { font-size: 30px; }
   }
 
+
+  /* ── DRAG & DROP ─────────────────────────────────────────────────────────── */
+  .drag-handle {
+    cursor: grab;
+    color: var(--muted);
+    font-size: 16px;
+    padding: 0 4px;
+    user-select: none;
+    touch-action: none;
+  }
+  .drag-handle:active { cursor: grabbing; }
+  tr.dragging { opacity: 0.4; background: var(--surface-hover) !important; }
+  tr.drag-over { border-top: 2px solid var(--accent) !important; }
+
 </style>
 </head>
 <body>
@@ -885,8 +899,8 @@
         const ps=v.panne?(v.panne.length>28?v.panne.slice(0,28)+'…':v.panne):'—';
         const mb=v.lastModifiedBy?`<span class="modif-tag ${v.lastModifiedBy}">${v.lastModifiedBy}</span>`:'—';
         const delBtn=canDelete?`<button class="icon-btn delete" onclick="deleteVehicle('${v.id}')">🗑️</button>`:'';
-        return `<tr onclick="openFiche('${v.id}')">
-          <td style="text-align:center;cursor:pointer" onclick="event.stopPropagation();openStatusMenu(event,this)" data-id="${v.id}" data-status="${v.status}">${badge(v.status)}</td>
+        return `<tr onclick="openFiche('${v.id}')" draggable="true" data-id="${v.id}">
+          <td class="drag-handle" title="Déplacer">⠿</td><td style="text-align:center;cursor:pointer" onclick="event.stopPropagation();openStatusMenu(event,this)" data-id="${v.id}" data-status="${v.status}">${badge(v.status)}</td>
           <td>
             <div class="td-immat td-copy" onclick="event.stopPropagation();event.preventDefault();var t=this.getAttribute('data-v');if(!t)return;try{navigator.clipboard.writeText(t).then(function(){showToast('📋 '+t+' copié !');});}catch(e){var x=document.createElement('textarea');x.value=t;document.body.appendChild(x);x.select();document.execCommand('copy');document.body.removeChild(x);showToast('📋 '+t+' copié !');}" data-v="${v.immat||''}" title="Copier l'immatriculation">${v.immat||'—'}</div>
             <div class="td-sub">${v.arrive||''}</div>
@@ -900,11 +914,12 @@
           <td><span class="td-meca">${v.meca||'—'}</span></td>
           <td style="text-align:center;cursor:pointer" onclick="event.stopPropagation();openPayMenu(event,this)" data-id="${v.id}" data-pay="${v.paiement||'non-paye'}">${payBadge(v.paiement)}</td>
           <td style="text-align:center">${mb}</td>
-          <td onclick="event.stopPropagation()"><div class="row-actions"><button class="icon-btn" title="Monter" onclick="event.stopPropagation();moveRow('${v.id}',-1)">↑</button><button class="icon-btn" title="Descendre" onclick="event.stopPropagation();moveRow('${v.id}',1)">↓</button><button class="icon-btn fiche-btn" title="Fiche détaillée" onclick="openFiche('${v.id}')">📋</button><button class="icon-btn" title="Modifier" onclick="openEdit('${v.id}')">✏️</button>${delBtn}</div></td>
+          <td onclick="event.stopPropagation()"><div class="row-actions"><button class="icon-btn fiche-btn" title="Fiche détaillée" onclick="openFiche('${v.id}')">📋</button><button class="icon-btn" title="Modifier" onclick="openEdit('${v.id}')">✏️</button>${delBtn}</div></td>
         </tr>`;
       }).join('');
     }
     updateStats();
+    setTimeout(initDragDrop, 50);
   }
 
   // ── LISTENERS ────────────────────────────────────────────────────────────────
@@ -1136,35 +1151,95 @@
     }
   }
 
-  window.moveRow = async function(id, direction) {
-    // Get current filtered+sorted list
-    const f = document.getElementById('filter').value;
-    const q = document.getElementById('search').value.toLowerCase();
-    let visible = vehicles.filter(v => {
-      if(f === 'actif') return !['restitue'].includes(v.status);
-      if(f) return v.status === f;
-      return true;
+  
+  // ── DRAG & DROP REORDER ─────────────────────────────────────────────────────
+  let dragSrcId = null;
+  let dragSrcEl = null;
+
+  function initDragDrop() {
+    const tbody = document.querySelector('#vehicles-tbody');
+    if (!tbody) return;
+
+    tbody.querySelectorAll('tr[draggable]').forEach(tr => {
+      const handle = tr.querySelector('.drag-handle');
+
+      // ── Desktop drag events ──
+      handle.addEventListener('mousedown', () => { tr.draggable = true; });
+      tr.addEventListener('dragstart', e => {
+        dragSrcId = tr.dataset.id;
+        dragSrcEl = tr;
+        setTimeout(() => tr.classList.add('dragging'), 0);
+        e.dataTransfer.effectAllowed = 'move';
+      });
+      tr.addEventListener('dragend', () => {
+        tr.classList.remove('dragging');
+        tbody.querySelectorAll('tr').forEach(r => r.classList.remove('drag-over'));
+      });
+      tr.addEventListener('dragover', e => {
+        e.preventDefault();
+        tbody.querySelectorAll('tr').forEach(r => r.classList.remove('drag-over'));
+        if (tr.dataset.id !== dragSrcId) tr.classList.add('drag-over');
+      });
+      tr.addEventListener('drop', e => {
+        e.preventDefault();
+        tr.classList.remove('drag-over');
+        if (!dragSrcId || tr.dataset.id === dragSrcId) return;
+        swapRows(dragSrcId, tr.dataset.id);
+      });
+
+      // ── Touch events (mobile) ──
+      let touchY = 0;
+      handle.addEventListener('touchstart', e => {
+        dragSrcId = tr.dataset.id;
+        dragSrcEl = tr;
+        touchY = e.touches[0].clientY;
+        tr.classList.add('dragging');
+        e.preventDefault();
+      }, { passive: false });
+
+      handle.addEventListener('touchmove', e => {
+        e.preventDefault();
+        const y = e.touches[0].clientY;
+        const rows = [...tbody.querySelectorAll('tr[draggable]')];
+        tbody.querySelectorAll('tr').forEach(r => r.classList.remove('drag-over'));
+        for (const row of rows) {
+          const rect = row.getBoundingClientRect();
+          if (y >= rect.top && y <= rect.bottom && row.dataset.id !== dragSrcId) {
+            row.classList.add('drag-over');
+            break;
+          }
+        }
+      }, { passive: false });
+
+      handle.addEventListener('touchend', e => {
+        tr.classList.remove('dragging');
+        const overEl = tbody.querySelector('tr.drag-over');
+        tbody.querySelectorAll('tr').forEach(r => r.classList.remove('drag-over'));
+        if (overEl && overEl.dataset.id !== dragSrcId) {
+          swapRows(dragSrcId, overEl.dataset.id);
+        }
+        dragSrcId = null;
+      });
     });
+  }
 
-    const idx = visible.findIndex(v => v.id === id);
-    const swapIdx = idx + direction;
-    if(swapIdx < 0 || swapIdx >= visible.length) return;
+  async function swapRows(idA, idB) {
+    const a = vehicles.find(v => v.id === idA);
+    const b = vehicles.find(v => v.id === idB);
+    if (!a || !b) return;
 
-    const a = visible[idx];
-    const b = visible[swapIdx];
-
-    // Assign positions to all if not set
-    if(vehicles.some(v => v.position === undefined)) {
-      vehicles.forEach((v, i) => { if(v.position === undefined) v.position = i * 10; });
+    // Assign positions to all vehicles if not yet set
+    if (vehicles.some(v => v.position === undefined)) {
+      vehicles.forEach((v, i) => { v.position = i * 10; });
     }
 
-    // Swap positions
-    const posA = a.position !== undefined ? a.position : idx * 10;
-    const posB = b.position !== undefined ? b.position : swapIdx * 10;
+    const posA = a.position ?? vehicles.indexOf(a) * 10;
+    const posB = b.position ?? vehicles.indexOf(b) * 10;
 
     try {
-      await updateDoc(doc(db, 'vehicles', a.id), { position: posB });
-      await updateDoc(doc(db, 'vehicles', b.id), { position: posA });
+      await updateDoc(doc(db, 'vehicles', idA), { position: posB });
+      await updateDoc(doc(db, 'vehicles', idB), { position: posA });
+      showToast('✅ Ordre mis à jour');
     } catch(e) {
       showToast('❌ ' + e.message, 'error');
     }
