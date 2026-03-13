@@ -791,7 +791,7 @@
         const mb=v.lastModifiedBy?`<span class="modif-tag ${v.lastModifiedBy}">${v.lastModifiedBy}</span>`:'—';
         const delBtn=canDelete?`<button class="icon-btn delete" onclick="deleteVehicle('${v.id}')">🗑️</button>`:'';
         return `<tr onclick="openFiche('${v.id}')">
-          <td style="text-align:center" onclick="event.stopPropagation();openStatusMenu(event,'${v.id}','${v.status}')" title="Changer le statut" style="cursor:pointer">${badge(v.status)}</td>
+          <td style="text-align:center;cursor:pointer" onclick="event.stopPropagation();openStatusMenu(event,this)" data-id="${v.id}" data-status="${v.status}">${badge(v.status)}</td>
           <td>
             <div class="td-immat td-copy" onclick="event.stopPropagation();copyText(this.getAttribute('data-v'))" data-v="${v.immat||''}" title="Copier l'immatriculation">${v.immat||'—'}</div>
             <div class="td-sub">${v.arrive||''}</div>
@@ -803,7 +803,7 @@
             <div class="td-sub td-copy td-tel" onclick="event.stopPropagation();copyText(this.getAttribute('data-v'))" data-v="${v.tel||''}" title="Copier le numéro">${v.tel||''}</div>
           </td>
           <td><span class="td-meca">${v.meca||'—'}</span></td>
-          <td style="text-align:center;cursor:pointer" onclick="event.stopPropagation();openPayMenu(event,'${v.id}','${v.paiement||\'non-paye\'}')">${payBadge(v.paiement)}</td>
+          <td style="text-align:center;cursor:pointer" onclick="event.stopPropagation();openPayMenu(event,this)" data-id="${v.id}" data-pay="${v.paiement||'non-paye'}">${payBadge(v.paiement)}</td>
           <td style="text-align:center">${mb}</td>
           <td onclick="event.stopPropagation()"><div class="row-actions"><button class="icon-btn fiche-btn" title="Fiche détaillée" onclick="openFiche('${v.id}')">📋</button><button class="icon-btn" title="Modifier" onclick="openEdit('${v.id}')">✏️</button>${delBtn}</div></td>
         </tr>`;
@@ -995,9 +995,11 @@
   }
 
   let _statusMenuVehicleId = null;
+  let _payMenuVehicleId = null;
 
-  window.openStatusMenu = function(e, vehicleId, currentStatus) {
-    _statusMenuVehicleId = vehicleId;
+  window.openStatusMenu = function(e, el) {
+    _statusMenuVehicleId = el.dataset.id;
+    const currentStatus = el.dataset.status;
     const menu = document.getElementById('status-menu');
     // Highlight current status
     menu.querySelectorAll('.status-menu-item').forEach((el, i) => {
@@ -1037,6 +1039,30 @@
     } catch(e) {
       showToast('❌ Erreur : ' + e.message, 'error');
     }
+  }
+
+  window.openPayMenu = function(e, el) {
+    _payMenuVehicleId = el.dataset.id;
+    const menu = document.getElementById('pay-menu');
+    menu.style.display = 'block';
+    const x = e.clientX, y = e.clientY;
+    menu.style.left = (x + 180 > window.innerWidth ? x - 180 : x) + 'px';
+    menu.style.top = (y + 200 > window.innerHeight ? y - 200 : y + 8) + 'px';
+    setTimeout(() => document.addEventListener('click', () => { menu.style.display='none'; }, {once:true}), 10);
+  }
+
+  window.setPay = async function(newPay) {
+    document.getElementById('pay-menu').style.display = 'none';
+    if(!_payMenuVehicleId) return;
+    const id = _payMenuVehicleId;
+    try {
+      await updateDoc(doc(db,'vehicles',id), {
+        paiement: newPay,
+        modifiedBy: currentUser,
+        updatedAt: new Date().toISOString()
+      });
+      showToast('💳 Paiement mis à jour !');
+    } catch(e) { showToast('❌ ' + e.message, 'error'); }
   }
 
   window.copyTel = function() {
