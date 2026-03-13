@@ -926,7 +926,7 @@
   function startListeners() {
     onSnapshot(query(vehiclesRef,orderBy('createdAt','desc')),snap=>{
       vehicles=snap.docs.map(d=>({id:d.id,...d.data()}));
-      renderTable();
+      if(!isDragging) renderTable();
       updateFicheIfOpen(vehicles);
       document.getElementById('loader').style.display='none';
     });
@@ -1154,6 +1154,7 @@
   
     // ── DRAG & DROP REORDER ─────────────────────────────────────────────────────
   let dragSrcId = null;
+  let isDragging = false;
 
   function initDragDrop() {
     const tbody = document.querySelector('#vehicle-tbody');
@@ -1172,10 +1173,12 @@
         dragSrcId = tr.dataset.id;
         e.dataTransfer.effectAllowed = 'move';
         e.dataTransfer.setData('text/plain', tr.dataset.id);
+        isDragging = true;
         setTimeout(() => tr.classList.add('dragging'), 0);
       });
 
       tr.addEventListener('dragend', () => {
+        isDragging = false;
         tr.classList.remove('dragging');
         tbody.querySelectorAll('tr').forEach(r => r.classList.remove('drag-over'));
       });
@@ -1237,6 +1240,7 @@
       }, { passive: false });
 
       handle.addEventListener('touchend', () => {
+        isDragging = false;
         tr.classList.remove('dragging');
         const overEl = tbody.querySelector('tr.drag-over');
         tbody.querySelectorAll('tr').forEach(r => r.classList.remove('drag-over'));
