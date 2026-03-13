@@ -115,18 +115,19 @@
   .status-menu-item:hover{background:rgba(255,255,255,0.06);}
   .status-menu-item.current{background:rgba(255,140,42,0.1);color:var(--accent);}
   .badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:20px;font-size:11px;font-weight:500;font-family:var(--font-mono);white-space:nowrap;}
+  .badge-dot{width:5px;height:5px;border-radius:50%;}
   .badge.attente{background:rgba(107,114,128,0.15);color:var(--muted);border:1px solid rgba(107,114,128,0.25);}
-  /* .badge.attente .badge-dot{background:var(--muted);}
+  .badge.attente .badge-dot{background:var(--muted);}
   .badge.en-cours{background:rgba(255,140,42,0.12);color:var(--accent);border:1px solid rgba(255,140,42,0.25);}
-  /* .badge.en-cours .badge-dot{background:var(--accent);animation:pulse 1.5s infinite;} */
+  .badge.en-cours .badge-dot{background:var(--accent);animation:pulse 1.5s infinite;}
   .badge.pieces{background:rgba(255,181,71,0.12);color:var(--warning);border:1px solid rgba(255,181,71,0.25);}
-  /* .badge.pieces .badge-dot{background:var(--warning);}
+  .badge.pieces .badge-dot{background:var(--warning);}
   .badge.termine{background:rgba(77,255,180,0.1);color:var(--success);border:1px solid rgba(77,255,180,0.2);}
-  /* .badge.termine .badge-dot{background:var(--success);}
+  .badge.termine .badge-dot{background:var(--success);}
   .badge.restitue{background:rgba(71,184,255,0.1);color:var(--accent2);border:1px solid rgba(71,184,255,0.2);}
-  /* .badge.restitue .badge-dot{background:var(--accent2);}
+  .badge.restitue .badge-dot{background:var(--accent2);}
   .badge.pieces-recues{background:rgba(52,211,153,0.12);color:#34d399;border:1px solid rgba(52,211,153,0.25);}
-  /* .badge.pieces-recues .badge-dot{background:#34d399;}
+  .badge.pieces-recues .badge-dot{background:#34d399;}
   .modif-tag{font-family:var(--font-mono);font-size:9px;padding:2px 7px;border-radius:4px;display:inline-block;}
   .modif-tag.Morad{background:rgba(255,140,42,0.15);color:var(--accent);}
   .modif-tag.Bureau{background:rgba(71,184,255,0.15);color:var(--accent2);}
@@ -139,11 +140,11 @@
   .empty-icon{font-size:36px;margin-bottom:10px;opacity:0.3;}
   .empty-text{font-size:13px;}
   .side-panel{display:flex;flex-direction:column;gap:18px;}
-  .form-body{padding:20px;display:flex;flex-direction:column;gap:8px;}
-  .form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:8px;width:100%;}
+  .form-body{padding:18px;display:flex;flex-direction:column;gap:12px;}
+  .form-group{display:flex;flex-direction:column;gap:5px;}
   .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-  .form-label{font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--accent);opacity:0.9;font-weight:600;margin-bottom:4px;display:block;width:100%;}
-  .form-input,.form-select,.form-textarea{display:block;background:var(--surface2);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:10px 13px;color:var(--text);font-family:var(--font-body);font-size:14px;outline:none;transition:border-color 0.2s;width:100%;box-sizing:border-box;}
+  .form-label{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text);opacity:0.75;font-weight:500;}
+  .form-input,.form-select,.form-textarea{background:var(--surface2);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:9px 12px;color:var(--text);font-family:var(--font-body);font-size:13px;outline:none;transition:border-color 0.2s;width:100%;}
   .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent);}
   .form-input::placeholder,.form-textarea::placeholder{color:rgba(255,255,255,0.3);}
   .form-textarea{resize:vertical;min-height:60px;font-size:12px;}
@@ -171,7 +172,7 @@
   .modal-actions{display:flex;gap:10px;margin-top:18px;}
   .cancel-btn{flex:1;padding:10px;background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:var(--font-body);font-size:13px;cursor:pointer;transition:border-color 0.2s,color 0.2s;}
   .cancel-btn:hover{border-color:var(--text);color:var(--text);}
-  .form-section{font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--accent);padding:12px 0 8px 0;border-bottom:2px solid rgba(255,140,42,0.3);margin:4px 0 12px 0;font-weight:700;display:block;width:100%;}
+  .form-section{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--accent);padding-bottom:8px;border-bottom:1px solid rgba(255,140,42,0.25);margin-bottom:2px;font-weight:600;}
   .toast{position:fixed;bottom:24px;right:24px;z-index:200;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 18px;font-size:13px;font-family:var(--font-body);box-shadow:0 8px 32px rgba(0,0,0,0.4);transform:translateY(80px);opacity:0;transition:all 0.3s;}
   .toast.show{transform:translateY(0);opacity:1;}
   .toast.success{border-color:rgba(77,255,180,0.3);color:var(--success);}
@@ -754,10 +755,7 @@
   }
 
 
-  function badge(s){
-    const icons={attente:'⏳','en-cours':'🔧',pieces:'📦','pieces-recues':'✅',termine:'🏁',restitue:'🚗'};
-    return `<span class="badge ${s}" style="cursor:pointer">${icons[s]||'•'} ${statusLabels[s]||s}</span>`;
-  }
+  function badge(s){return `<span class="badge ${s}"><span class="badge-dot"></span>${statusLabels[s]||s}</span>`;}
   function isUrgent(d){return d&&(new Date(d)-new Date())/86400000<=1;}
 
   // ── RENDER TABLE ─────────────────────────────────────────────────────────────
@@ -792,19 +790,19 @@
         const mb=v.lastModifiedBy?`<span class="modif-tag ${v.lastModifiedBy}">${v.lastModifiedBy}</span>`:'—';
         const delBtn=canDelete?`<button class="icon-btn delete" onclick="deleteVehicle('${v.id}')">🗑️</button>`:'';
         return `<tr onclick="openFiche('${v.id}')">
-          <td style="text-align:center;cursor:pointer" onclick="event.stopPropagation();openStatusMenu(event,'${v.id}','${v.status}')" title="Changer le statut">${badge(v.status)}</td>
+          <td style="text-align:center" onclick="event.stopPropagation();openStatusMenu(event,'${v.id}','${v.status}')" title="Changer le statut" style="cursor:pointer">${badge(v.status)}</td>
           <td>
-            <div class="td-immat td-copy" onclick="event.stopPropagation();copyText('${v.immat||''}')" title="Copier l'immatriculation">${v.immat||'—'}</div>
+            <div class="td-immat td-copy" onclick="copyText('${v.immat||''}')" title="Copier l'immatriculation">${v.immat||'—'}</div>
             <div class="td-sub">${v.arrive||''}</div>
           </td>
           <td><div>${v.model||'—'}</div><div class="td-sub">${v.km?Number(v.km).toLocaleString('fr-FR')+' km':''}</div></td>
           <td><span style="font-size:13px;color:#c9d1e0">${ps}</span></td>
           <td>
             <div class="td-client">${v.client||'—'}</div>
-            <div class="td-sub td-copy td-tel" onclick="event.stopPropagation();copyText('${v.tel||''}')" title="Copier le numéro">${v.tel||''}</div>
+            <div class="td-sub td-copy td-tel" onclick="copyText('${v.tel||''}');event.stopPropagation();" title="Copier le numéro">${v.tel||''}</div>
           </td>
           <td><span class="td-meca">${v.meca||'—'}</span></td>
-          <td style="text-align:center;cursor:pointer" onclick="event.stopPropagation();openPayMenu(event,'${v.id}','${v.paiement||'non-paye'}')" title="Changer le paiement">${payBadge(v.paiement)}</td>
+          <td style="text-align:center">${payBadge(v.paiement)}</td>
           <td style="text-align:center">${mb}</td>
           <td onclick="event.stopPropagation()"><div class="row-actions"><button class="icon-btn fiche-btn" title="Fiche détaillée" onclick="openFiche('${v.id}')">📋</button><button class="icon-btn" title="Modifier" onclick="openEdit('${v.id}')">✏️</button>${delBtn}</div></td>
         </tr>`;
@@ -1040,43 +1038,6 @@
     }
   }
 
-  let _payMenuVehicleId = null;
-
-  window.openPayMenu = function(e, vehicleId, currentPay) {
-    _payMenuVehicleId = vehicleId;
-    const menu = document.getElementById('pay-menu');
-    menu.querySelectorAll('.status-menu-item').forEach((el, i) => {
-      const vals = ['non-paye','carte','alma','gratuit','litige'];
-      el.classList.toggle('current', vals[i] === currentPay);
-    });
-    const x = e.clientX, y = e.clientY;
-    const menuW = 170, menuH = 200;
-    menu.style.left = (x + menuW > window.innerWidth ? x - menuW : x) + 'px';
-    menu.style.top = (y + menuH > window.innerHeight ? y - menuH : y + 8) + 'px';
-    menu.classList.add('active');
-    setTimeout(() => document.addEventListener('click', closePayMenu, {once:true}), 10);
-  }
-
-  function closePayMenu() {
-    document.getElementById('pay-menu').classList.remove('active');
-  }
-
-  window.setPay = async function(newPay) {
-    closePayMenu();
-    if(!_payMenuVehicleId) return;
-    const id = _payMenuVehicleId;
-    try {
-      await updateDoc(doc(db,'vehicles',id), {
-        paiement: newPay,
-        modifiedBy: currentUser,
-        updatedAt: new Date().toISOString()
-      });
-      showToast('💳 Paiement mis à jour !');
-    } catch(e) {
-      showToast('❌ Erreur : ' + e.message, 'error');
-    }
-  }
-
   window.copyTel = function() {
     if(!currentSmsTel) return;
     navigator.clipboard.writeText(currentSmsTel).then(()=>{
@@ -1272,15 +1233,6 @@
     <div class="status-menu-item" onclick="setStatus('pieces-recues')">✅ Pièces reçues</div>
     <div class="status-menu-item" onclick="setStatus('termine')">🏁 Terminé</div>
     <div class="status-menu-item" onclick="setStatus('restitue')">🚗 Restitué</div>
-  </div>
-
-  <!-- PAY QUICK MENU -->
-  <div class="status-menu" id="pay-menu">
-    <div class="status-menu-item" onclick="setPay('non-paye')">💸 Non payé</div>
-    <div class="status-menu-item" onclick="setPay('carte')">💳 Carte</div>
-    <div class="status-menu-item" onclick="setPay('alma')">🔄 Alma</div>
-    <div class="status-menu-item" onclick="setPay('gratuit')">🎁 Gratuit</div>
-    <div class="status-menu-item" onclick="setPay('litige')">⚠️ Litige</div>
   </div>
 
 </body>
