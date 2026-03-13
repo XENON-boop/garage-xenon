@@ -251,6 +251,93 @@
   /* View fiche btn */
   .fiche-btn{background:rgba(71,184,255,0.1);border:1px solid rgba(71,184,255,0.2);color:var(--accent2);}
   .fiche-btn:hover{background:rgba(71,184,255,0.2);border-color:var(--accent2);}
+
+  /* ── MOBILE RESPONSIVE ──────────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+
+    /* Header */
+    header {
+      grid-template-columns: 1fr auto;
+      padding: 10px 16px;
+      gap: 8px;
+    }
+    header > div:first-child { display: none; } /* hide empty left col */
+    .logo img { height: 36px !important; }
+    .logo > div { display: none; } /* hide subtitle */
+    .live-badge { display: none; }
+    #datetime { display: none; }
+    .user-info { display: none; }
+    .logout-btn { padding: 6px 10px; }
+
+    /* Main padding */
+    main { padding: 14px 12px; }
+
+    /* Stats - 2x2 + 1 centered */
+    .stats-row {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .stat-card { padding: 16px 18px; }
+    .stat-label { font-size: 10px; margin-bottom: 6px; }
+    .stat-value { font-size: 36px; }
+
+    /* Content grid - stack vertically */
+    .content-grid {
+      grid-template-columns: 1fr;
+    }
+
+    /* Side panel goes below table */
+    .side-panel { order: 2; }
+
+    /* Table - hide less important columns on mobile */
+    table { min-width: unset; width: 100%; }
+    thead th:nth-child(3),  /* Véhicule */
+    thead th:nth-child(4),  /* Panne */
+    thead th:nth-child(6),  /* Mécanicien */
+    thead th:nth-child(8),  /* Modifié par */
+    thead th:nth-child(9)   /* Actions */
+    { display: none; }
+
+    tbody td:nth-child(3),
+    tbody td:nth-child(4),
+    tbody td:nth-child(6),
+    tbody td:nth-child(8),
+    tbody td:nth-child(9)
+    { display: none; }
+
+    /* Bigger touch targets */
+    tbody td { padding: 12px 10px; }
+    .td-immat { font-size: 14px; letter-spacing: 1px; }
+    .td-sub { font-size: 11px; }
+    .badge { font-size: 11px; padding: 4px 8px; }
+    .pay-badge { font-size: 11px; padding: 4px 8px; }
+
+    /* Table wrapper - enable horizontal scroll as fallback */
+    .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+    /* Search bar */
+    #search { font-size: 14px; }
+
+    /* Form panel full width */
+    .panel { border-radius: 12px; }
+    .form-body { padding: 14px; }
+
+    /* Fiche modal */
+    .fiche-modal-box {
+      width: 96vw !important;
+      max-width: 96vw !important;
+      padding: 16px !important;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .stat-value { font-size: 30px; }
+  }
+
 </style>
 </head>
 <body>
