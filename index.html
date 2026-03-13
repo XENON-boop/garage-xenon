@@ -1262,5 +1262,12 @@
     <div class="status-menu-item" onclick="setStatus('restitue')">🚗 Restitué</div>
   </div>
 
+  <div id="pay-menu" style="position:fixed;background:#1a1f2e;border:1px solid #2a3347;border-radius:12px;padding:6px;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,0.6);min-width:160px;display:none;">
+    <div onclick="setPay('non-paye')" style="padding:9px 14px;border-radius:8px;cursor:pointer;font-size:13px;color:#e2e8f0;transition:background 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background=''">💸 Non payé</div>
+    <div onclick="setPay('carte')" style="padding:9px 14px;border-radius:8px;cursor:pointer;font-size:13px;color:#e2e8f0;transition:background 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background=''">💳 Carte</div>
+    <div onclick="setPay('alma')" style="padding:9px 14px;border-radius:8px;cursor:pointer;font-size:13px;color:#e2e8f0;transition:background 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background=''">🔄 Alma</div>
+    <div onclick="setPay('gratuit')" style="padding:9px 14px;border-radius:8px;cursor:pointer;font-size:13px;color:#e2e8f0;transition:background 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background=''">🎁 Gratuit</div>
+    <div onclick="setPay('litige')" style="padding:9px 14px;border-radius:8px;cursor:pointer;font-size:13px;color:#e2e8f0;transition:background 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background=''">⚠️ Litige</div>
+  </div>
 </body>
 </html>
