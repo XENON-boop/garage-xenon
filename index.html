@@ -793,14 +793,14 @@
         return `<tr onclick="openFiche('${v.id}')">
           <td style="text-align:center;cursor:pointer" onclick="event.stopPropagation();openStatusMenu(event,this)" data-id="${v.id}" data-status="${v.status}">${badge(v.status)}</td>
           <td>
-            <div class="td-immat td-copy" onclick="event.stopPropagation();copyText(this.getAttribute('data-v'))" data-v="${v.immat||''}" title="Copier l'immatriculation">${v.immat||'—'}</div>
+            <div class="td-immat td-copy" onclick="event.stopPropagation();event.preventDefault();var t=this.getAttribute('data-v');if(t)navigator.clipboard.writeText(t).then(function(){showToast('📋 Copié : '+t);});" data-v="${v.immat||''}" title="Copier l'immatriculation">${v.immat||'—'}</div>
             <div class="td-sub">${v.arrive||''}</div>
           </td>
           <td><div>${v.model||'—'}</div><div class="td-sub">${v.km?Number(v.km).toLocaleString('fr-FR')+' km':''}</div></td>
           <td><span style="font-size:13px;color:#c9d1e0">${ps}</span></td>
           <td>
             <div class="td-client">${v.client||'—'}</div>
-            <div class="td-sub td-copy td-tel" onclick="event.stopPropagation();copyText(this.getAttribute('data-v'))" data-v="${v.tel||''}" title="Copier le numéro">${v.tel||''}</div>
+            <div class="td-sub td-copy td-tel" onclick="event.stopPropagation();event.preventDefault();var t=this.getAttribute('data-v');if(t)navigator.clipboard.writeText(t).then(function(){showToast('📋 Copié : '+t);});" data-v="${v.tel||''}" title="Copier le numéro">${v.tel||''}</div>
           </td>
           <td><span class="td-meca">${v.meca||'—'}</span></td>
           <td style="text-align:center;cursor:pointer" onclick="event.stopPropagation();openPayMenu(event,this)" data-id="${v.id}" data-pay="${v.paiement||'non-paye'}">${payBadge(v.paiement)}</td>
