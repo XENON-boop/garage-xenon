@@ -792,19 +792,19 @@
         const mb=v.lastModifiedBy?`<span class="modif-tag ${v.lastModifiedBy}">${v.lastModifiedBy}</span>`:'—';
         const delBtn=canDelete?`<button class="icon-btn delete" onclick="deleteVehicle('${v.id}')">🗑️</button>`:'';
         return `<tr onclick="openFiche('${v.id}')">
-          <td style="text-align:center" onclick="event.stopPropagation();openStatusMenu(event,'${v.id}','${v.status}')" title="Changer le statut" style="cursor:pointer">${badge(v.status)}</td>
+          <td style="text-align:center;cursor:pointer" onclick="event.stopPropagation();openStatusMenu(event,'${v.id}','${v.status}')" title="Changer le statut">${badge(v.status)}</td>
           <td>
-            <div class="td-immat td-copy" onclick="copyText('${v.immat||''}')" title="Copier l'immatriculation">${v.immat||'—'}</div>
+            <div class="td-immat td-copy" onclick="event.stopPropagation();copyText('${v.immat||''}')" title="Copier l'immatriculation">${v.immat||'—'}</div>
             <div class="td-sub">${v.arrive||''}</div>
           </td>
           <td><div>${v.model||'—'}</div><div class="td-sub">${v.km?Number(v.km).toLocaleString('fr-FR')+' km':''}</div></td>
           <td><span style="font-size:13px;color:#c9d1e0">${ps}</span></td>
           <td>
             <div class="td-client">${v.client||'—'}</div>
-            <div class="td-sub td-copy td-tel" onclick="copyText('${v.tel||''}');event.stopPropagation();" title="Copier le numéro">${v.tel||''}</div>
+            <div class="td-sub td-copy td-tel" onclick="event.stopPropagation();copyText('${v.tel||''}')" title="Copier le numéro">${v.tel||''}</div>
           </td>
           <td><span class="td-meca">${v.meca||'—'}</span></td>
-          <td style="text-align:center" onclick="event.stopPropagation();openPayMenu(event,'${v.id}','${v.paiement||'non-paye'}')" title="Changer le paiement">${payBadge(v.paiement)}</td>
+          <td style="text-align:center;cursor:pointer" onclick="event.stopPropagation();openPayMenu(event,'${v.id}','${v.paiement||'non-paye'}')" title="Changer le paiement">${payBadge(v.paiement)}</td>
           <td style="text-align:center">${mb}</td>
           <td onclick="event.stopPropagation()"><div class="row-actions"><button class="icon-btn fiche-btn" title="Fiche détaillée" onclick="openFiche('${v.id}')">📋</button><button class="icon-btn" title="Modifier" onclick="openEdit('${v.id}')">✏️</button>${delBtn}</div></td>
         </tr>`;
