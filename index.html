@@ -115,24 +115,23 @@
   .status-menu-item:hover{background:rgba(255,255,255,0.06);}
   .status-menu-item.current{background:rgba(255,140,42,0.1);color:var(--accent);}
   .badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:20px;font-size:11px;font-weight:500;font-family:var(--font-mono);white-space:nowrap;}
-  .badge-dot{width:5px;height:5px;border-radius:50%;}
   .badge.attente{background:rgba(107,114,128,0.15);color:var(--muted);border:1px solid rgba(107,114,128,0.25);}
-  .badge.attente .badge-dot{background:var(--muted);}
+  /* .badge.attente .badge-dot{background:var(--muted);}
   .badge.en-cours{background:rgba(255,140,42,0.12);color:var(--accent);border:1px solid rgba(255,140,42,0.25);}
-  .badge.en-cours .badge-dot{background:var(--accent);animation:pulse 1.5s infinite;}
+  /* .badge.en-cours .badge-dot{background:var(--accent);animation:pulse 1.5s infinite;} */
   .badge.pieces{background:rgba(255,181,71,0.12);color:var(--warning);border:1px solid rgba(255,181,71,0.25);}
-  .badge.pieces .badge-dot{background:var(--warning);}
+  /* .badge.pieces .badge-dot{background:var(--warning);}
   .badge.termine{background:rgba(77,255,180,0.1);color:var(--success);border:1px solid rgba(77,255,180,0.2);}
-  .badge.termine .badge-dot{background:var(--success);}
+  /* .badge.termine .badge-dot{background:var(--success);}
   .badge.restitue{background:rgba(71,184,255,0.1);color:var(--accent2);border:1px solid rgba(71,184,255,0.2);}
-  .badge.restitue .badge-dot{background:var(--accent2);}
+  /* .badge.restitue .badge-dot{background:var(--accent2);}
   .badge.pieces-recues{background:rgba(52,211,153,0.12);color:#34d399;border:1px solid rgba(52,211,153,0.25);}
-  .badge.pieces-recues .badge-dot{background:#34d399;}
+  /* .badge.pieces-recues .badge-dot{background:#34d399;}
   .modif-tag{font-family:var(--font-mono);font-size:9px;padding:2px 7px;border-radius:4px;display:inline-block;}
   .modif-tag.Morad{background:rgba(255,140,42,0.15);color:var(--accent);}
   .modif-tag.Bureau{background:rgba(71,184,255,0.15);color:var(--accent2);}
-  .row-actions{display:flex;gap:5px;opacity:0;transition:opacity 0.2s;}
-  tbody tr:hover .row-actions{opacity:1;}
+  .row-actions{display:flex;gap:5px;opacity:1;}
+  /* row-actions always visible */
   .icon-btn{width:28px;height:28px;border-radius:6px;border:1px solid var(--border);background:var(--surface2);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;transition:all 0.15s;}
   .icon-btn:hover{border-color:var(--accent);color:var(--accent);}
   .icon-btn.delete:hover{border-color:var(--danger);color:var(--danger);}
@@ -140,11 +139,11 @@
   .empty-icon{font-size:36px;margin-bottom:10px;opacity:0.3;}
   .empty-text{font-size:13px;}
   .side-panel{display:flex;flex-direction:column;gap:18px;}
-  .form-body{padding:18px;display:flex;flex-direction:column;gap:12px;}
-  .form-group{display:flex;flex-direction:column;gap:5px;}
+  .form-body{padding:20px;display:flex;flex-direction:column;gap:14px;}
+  .form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:2px;}
   .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-  .form-label{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text);opacity:0.75;font-weight:500;}
-  .form-input,.form-select,.form-textarea{background:var(--surface2);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:9px 12px;color:var(--text);font-family:var(--font-body);font-size:13px;outline:none;transition:border-color 0.2s;width:100%;}
+  .form-label{font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--accent);opacity:0.9;font-weight:600;margin-bottom:3px;display:block;}
+  .form-input,.form-select,.form-textarea{background:var(--surface2);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:10px 13px;color:var(--text);font-family:var(--font-body);font-size:14px;outline:none;transition:border-color 0.2s;width:100%;}
   .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent);}
   .form-input::placeholder,.form-textarea::placeholder{color:rgba(255,255,255,0.3);}
   .form-textarea{resize:vertical;min-height:60px;font-size:12px;}
@@ -172,7 +171,7 @@
   .modal-actions{display:flex;gap:10px;margin-top:18px;}
   .cancel-btn{flex:1;padding:10px;background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:var(--font-body);font-size:13px;cursor:pointer;transition:border-color 0.2s,color 0.2s;}
   .cancel-btn:hover{border-color:var(--text);color:var(--text);}
-  .form-section{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--accent);padding-bottom:8px;border-bottom:1px solid rgba(255,140,42,0.25);margin-bottom:2px;font-weight:600;}
+  .form-section{font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--accent);padding:10px 0 8px 0;border-bottom:2px solid rgba(255,140,42,0.3);margin:6px 0 10px 0;font-weight:700;}
   .toast{position:fixed;bottom:24px;right:24px;z-index:200;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 18px;font-size:13px;font-family:var(--font-body);box-shadow:0 8px 32px rgba(0,0,0,0.4);transform:translateY(80px);opacity:0;transition:all 0.3s;}
   .toast.show{transform:translateY(0);opacity:1;}
   .toast.success{border-color:rgba(77,255,180,0.3);color:var(--success);}
@@ -338,12 +337,12 @@
         <div class="panel">
           <div class="panel-header"><div class="panel-title">➕ Nouveau véhicule</div></div>
           <div class="form-body">
-            <div class="form-section">Véhicule</div>
+            <div style="font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:2px;color:#ff8c2a;padding:12px 0 8px 0;border-bottom:2px solid rgba(255,140,42,0.3);margin-bottom:12px;font-weight:700;">VÉHICULE</div>
             <div class="form-row">
-              <div class="form-group"><label class="form-label">Immatriculation</label><input class="form-input" id="n-immat" placeholder="AB-123-CD" maxlength="12"></div>
-              <div class="form-group"><label class="form-label">Kilométrage</label><input class="form-input" id="n-km" type="number" placeholder="85000" min="0"></div>
+              <div class="form-group"><label style="display:block;font-family:\'DM Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff8c2a;font-weight:600;margin-bottom:5px;">Immatriculation</label><input class="form-input" id="n-immat" placeholder="AB-123-CD" maxlength="12"></div>
+              <div class="form-group"><label style="display:block;font-family:\'DM Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff8c2a;font-weight:600;margin-bottom:5px;">Kilométrage</label><input class="form-input" id="n-km" type="number" placeholder="85000" min="0"></div>
             </div>
-            <div class="form-group"><label class="form-label">Marque</label>
+            <div class="form-group"><label style="display:block;font-family:\'DM Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff8c2a;font-weight:600;margin-bottom:5px;">Marque</label>
               <select class="form-select" id="n-marque" onchange="updateModeles('n-marque','n-modele','n-modele-autre')">
                 <option value="">— Choisir une marque —</option>
                 <option>Audi</option><option>BMW</option><option>Citroën</option><option>Dacia</option>
@@ -354,32 +353,32 @@
                 <option>Autre</option>
               </select>
             </div>
-            <div class="form-group"><label class="form-label">Modèle</label>
+            <div class="form-group"><label style="display:block;font-family:\'DM Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff8c2a;font-weight:600;margin-bottom:5px;">Modèle</label>
               <select class="form-select" id="n-modele" onchange="toggleAutre('n-modele','n-modele-autre')">
                 <option value="">— Choisir d'abord une marque —</option>
               </select>
             </div>
             <div class="form-group" id="n-modele-autre-wrap" style="display:none">
-              <label class="form-label">Préciser le modèle</label>
+              <label style="display:block;font-family:\'DM Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff8c2a;font-weight:600;margin-bottom:5px;">Préciser le modèle</label>
               <input class="form-input" id="n-modele-autre" placeholder="Saisir le modèle manuellement…">
             </div>
             <div class="form-row">
-              <div class="form-group"><label class="form-label">Arrivée par</label>
+              <div class="form-group"><label style="display:block;font-family:\'DM Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff8c2a;font-weight:600;margin-bottom:5px;">Arrivée par</label>
                 <select class="form-select" id="n-arrive">
                   <option value="🚛 3J">🚛 3J</option>
                   <option value="🛻 2000">🛻 2000</option>
                   <option value="🚗 Client">🚗 Client</option>
                 </select>
               </div>
-              <div class="form-group"><label class="form-label">Date d'arrivée</label><input class="form-input" id="n-date-arrive" type="date"></div>
+              <div class="form-group"><label style="display:block;font-family:\'DM Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff8c2a;font-weight:600;margin-bottom:5px;">Date d'arrivée</label><input class="form-input" id="n-date-arrive" type="date"></div>
             </div>
             <div class="form-section" style="margin-top:4px">Client</div>
-            <div class="form-group"><label class="form-label">Nom du client</label><input class="form-input" id="n-client" placeholder="Jean Dupont"></div>
-            <div class="form-group"><label class="form-label">Téléphone</label><input class="form-input" id="n-tel" type="tel" placeholder="06 12 34 56 78"></div>
+            <div class="form-group"><label style="display:block;font-family:\'DM Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff8c2a;font-weight:600;margin-bottom:5px;">Nom du client</label><input class="form-input" id="n-client" placeholder="Jean Dupont"></div>
+            <div class="form-group"><label style="display:block;font-family:\'DM Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff8c2a;font-weight:600;margin-bottom:5px;">Téléphone</label><input class="form-input" id="n-tel" type="tel" placeholder="06 12 34 56 78"></div>
             <div class="form-section" style="margin-top:4px">Intervention</div>
-            <div class="form-group"><label class="form-label">Panne déclarée</label><textarea class="form-textarea" id="n-panne" placeholder="Ce que décrit le client…" rows="2"></textarea></div>
+            <div class="form-group"><label style="display:block;font-family:\'DM Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff8c2a;font-weight:600;margin-bottom:5px;">Panne déclarée</label><textarea class="form-textarea" id="n-panne" placeholder="Ce que décrit le client…" rows="2"></textarea></div>
             <div class="form-row">
-              <div class="form-group"><label class="form-label">Mécanicien</label>
+              <div class="form-group"><label style="display:block;font-family:\'DM Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff8c2a;font-weight:600;margin-bottom:5px;">Mécanicien</label>
                 <select class="form-select" id="n-meca">
                   <option value="">— Choisir —</option>
                   <option value="Kamel">Kamel</option>
@@ -387,7 +386,7 @@
                   <option value="N3">N3</option>
                 </select>
               </div>
-              <div class="form-group"><label class="form-label">Statut</label>
+              <div class="form-group"><label style="display:block;font-family:\'DM Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff8c2a;font-weight:600;margin-bottom:5px;">Statut</label>
                 <select class="form-select" id="n-status">
                   <option value="attente">⏳ En attente</option>
                   <option value="en-cours">🔧 En cours</option>
@@ -397,8 +396,8 @@
                 </select>
               </div>
             </div>
-            <div class="form-group"><label class="form-label">Date de restitution prévue</label><input class="form-input" id="n-restitution" type="date"></div>
-            <div class="form-group"><label class="form-label">Paiement</label>
+            <div class="form-group"><label style="display:block;font-family:\'DM Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff8c2a;font-weight:600;margin-bottom:5px;">Date de restitution prévue</label><input class="form-input" id="n-restitution" type="date"></div>
+            <div class="form-group"><label style="display:block;font-family:\'DM Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff8c2a;font-weight:600;margin-bottom:5px;">Paiement</label>
               <select class="form-select" id="n-paiement">
                 <option value="non-paye">💸 Non payé</option>
                 <option value="carte">💳 Carte</option>
@@ -427,9 +426,9 @@
     <input type="hidden" id="e-id">
     <div class="modal-grid">
       <div class="form-group modal-full"><div class="form-section">Véhicule</div></div>
-      <div class="form-group"><label class="form-label">Immatriculation</label><input class="form-input" id="e-immat"></div>
-      <div class="form-group"><label class="form-label">Kilométrage</label><input class="form-input" id="e-km" type="number" min="0"></div>
-      <div class="form-group"><label class="form-label">Marque</label>
+      <div class="form-group"><label style="display:block;font-family:\'DM Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff8c2a;font-weight:600;margin-bottom:5px;">Immatriculation</label><input class="form-input" id="e-immat"></div>
+      <div class="form-group"><label style="display:block;font-family:\'DM Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff8c2a;font-weight:600;margin-bottom:5px;">Kilométrage</label><input class="form-input" id="e-km" type="number" min="0"></div>
+      <div class="form-group"><label style="display:block;font-family:\'DM Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff8c2a;font-weight:600;margin-bottom:5px;">Marque</label>
         <select class="form-select" id="e-marque" onchange="updateModeles('e-marque','e-modele','e-modele-autre')">
           <option value="">— Choisir une marque —</option>
           <option>Audi</option><option>BMW</option><option>Citroën</option><option>Dacia</option>
@@ -440,30 +439,30 @@
           <option>Autre</option>
         </select>
       </div>
-      <div class="form-group"><label class="form-label">Modèle</label>
+      <div class="form-group"><label style="display:block;font-family:\'DM Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff8c2a;font-weight:600;margin-bottom:5px;">Modèle</label>
         <select class="form-select" id="e-modele" onchange="toggleAutre('e-modele','e-modele-autre')">
           <option value="">— Choisir d'abord une marque —</option>
         </select>
       </div>
       <div class="form-group modal-full" id="e-modele-autre-wrap" style="display:none">
-        <label class="form-label">Préciser le modèle</label>
+        <label style="display:block;font-family:\'DM Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff8c2a;font-weight:600;margin-bottom:5px;">Préciser le modèle</label>
         <input class="form-input" id="e-modele-autre" placeholder="Saisir le modèle manuellement…">
       </div>
-      <div class="form-group"><label class="form-label">Arrivée par</label>
+      <div class="form-group"><label style="display:block;font-family:\'DM Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff8c2a;font-weight:600;margin-bottom:5px;">Arrivée par</label>
         <select class="form-select" id="e-arrive">
           <option value="🚛 3J">🚛 3J</option>
           <option value="🛻 2000">🛻 2000</option>
           <option value="🚗 Client">🚗 Client</option>
         </select>
       </div>
-      <div class="form-group"><label class="form-label">Date d'arrivée</label><input class="form-input" id="e-date-arrive" type="date"></div>
+      <div class="form-group"><label style="display:block;font-family:\'DM Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff8c2a;font-weight:600;margin-bottom:5px;">Date d'arrivée</label><input class="form-input" id="e-date-arrive" type="date"></div>
       <div class="form-group modal-full"><div class="form-section" style="margin-top:4px">Client</div></div>
-      <div class="form-group"><label class="form-label">Nom du client</label><input class="form-input" id="e-client"></div>
-      <div class="form-group"><label class="form-label">Téléphone</label><input class="form-input" id="e-tel" type="tel"></div>
+      <div class="form-group"><label style="display:block;font-family:\'DM Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff8c2a;font-weight:600;margin-bottom:5px;">Nom du client</label><input class="form-input" id="e-client"></div>
+      <div class="form-group"><label style="display:block;font-family:\'DM Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff8c2a;font-weight:600;margin-bottom:5px;">Téléphone</label><input class="form-input" id="e-tel" type="tel"></div>
       <div class="form-group modal-full"><div class="form-section" style="margin-top:4px">Intervention</div></div>
-      <div class="form-group modal-full"><label class="form-label">Panne déclarée</label><textarea class="form-textarea" id="e-panne" rows="2"></textarea></div>
-      <div class="form-group modal-full"><label class="form-label">Diagnostic mécanicien</label><textarea class="form-textarea" id="e-diag" rows="2" placeholder="Ce que le mécanicien a trouvé…"></textarea></div>
-      <div class="form-group"><label class="form-label">Mécanicien</label>
+      <div class="form-group modal-full"><label style="display:block;font-family:\'DM Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff8c2a;font-weight:600;margin-bottom:5px;">Panne déclarée</label><textarea class="form-textarea" id="e-panne" rows="2"></textarea></div>
+      <div class="form-group modal-full"><label style="display:block;font-family:\'DM Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff8c2a;font-weight:600;margin-bottom:5px;">Diagnostic mécanicien</label><textarea class="form-textarea" id="e-diag" rows="2" placeholder="Ce que le mécanicien a trouvé…"></textarea></div>
+      <div class="form-group"><label style="display:block;font-family:\'DM Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff8c2a;font-weight:600;margin-bottom:5px;">Mécanicien</label>
         <select class="form-select" id="e-meca">
           <option value="">— Choisir —</option>
           <option value="Kamel">Kamel</option>
@@ -471,7 +470,7 @@
           <option value="N3">N3</option>
         </select>
       </div>
-      <div class="form-group"><label class="form-label">Statut</label>
+      <div class="form-group"><label style="display:block;font-family:\'DM Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff8c2a;font-weight:600;margin-bottom:5px;">Statut</label>
         <select class="form-select" id="e-status">
           <option value="attente">⏳ En attente</option>
           <option value="en-cours">🔧 En cours</option>
@@ -481,8 +480,8 @@
           <option value="restitue">🏁 Restitué</option>
         </select>
       </div>
-      <div class="form-group modal-full"><label class="form-label">Date de restitution prévue</label><input class="form-input" id="e-restitution" type="date"></div>
-      <div class="form-group modal-full"><label class="form-label">Paiement</label>
+      <div class="form-group modal-full"><label style="display:block;font-family:\'DM Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff8c2a;font-weight:600;margin-bottom:5px;">Date de restitution prévue</label><input class="form-input" id="e-restitution" type="date"></div>
+      <div class="form-group modal-full"><label style="display:block;font-family:\'DM Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#ff8c2a;font-weight:600;margin-bottom:5px;">Paiement</label>
         <select class="form-select" id="e-paiement">
           <option value="non-paye">💸 Non payé</option>
           <option value="carte">💳 Carte</option>
@@ -755,7 +754,10 @@
   }
 
 
-  function badge(s){return `<span class="badge ${s}"><span class="badge-dot"></span>${statusLabels[s]||s}</span>`;}
+  function badge(s){
+    const icons={attente:'⏳','en-cours':'🔧',pieces:'📦','pieces-recues':'✅',termine:'🏁',restitue:'🚗'};
+    return `<span class="badge ${s}" style="cursor:pointer">${icons[s]||'•'} ${statusLabels[s]||s}</span>`;
+  }
   function isUrgent(d){return d&&(new Date(d)-new Date())/86400000<=1;}
 
   // ── RENDER TABLE ─────────────────────────────────────────────────────────────
@@ -790,19 +792,19 @@
         const mb=v.lastModifiedBy?`<span class="modif-tag ${v.lastModifiedBy}">${v.lastModifiedBy}</span>`:'—';
         const delBtn=canDelete?`<button class="icon-btn delete" onclick="deleteVehicle('${v.id}')">🗑️</button>`:'';
         return `<tr onclick="openFiche('${v.id}')">
-          <td style="text-align:center" onclick="event.stopPropagation();openStatusMenu(event,'${v.id}','${v.status}')" title="Changer le statut" style="cursor:pointer">${badge(v.status)}</td>
+          <td style="text-align:center;cursor:pointer" onclick="event.stopPropagation();openStatusMenu(event,'${v.id}','${v.status}')" title="Changer le statut">${badge(v.status)}</td>
           <td>
-            <div class="td-immat td-copy" onclick="copyText('${v.immat||''}')" title="Copier l'immatriculation">${v.immat||'—'}</div>
+            <div class="td-immat td-copy" onclick="event.stopPropagation();copyText('${v.immat||''}')" title="Copier l'immatriculation">${v.immat||'—'}</div>
             <div class="td-sub">${v.arrive||''}</div>
           </td>
           <td><div>${v.model||'—'}</div><div class="td-sub">${v.km?Number(v.km).toLocaleString('fr-FR')+' km':''}</div></td>
           <td><span style="font-size:13px;color:#c9d1e0">${ps}</span></td>
           <td>
             <div class="td-client">${v.client||'—'}</div>
-            <div class="td-sub td-copy td-tel" onclick="copyText('${v.tel||''}');event.stopPropagation();" title="Copier le numéro">${v.tel||''}</div>
+            <div class="td-sub td-copy td-tel" onclick="event.stopPropagation();copyText('${v.tel||''}')" title="Copier le numéro">${v.tel||''}</div>
           </td>
           <td><span class="td-meca">${v.meca||'—'}</span></td>
-          <td style="text-align:center">${payBadge(v.paiement)}</td>
+          <td style="text-align:center;cursor:pointer" onclick="event.stopPropagation();openPayMenu(event,'${v.id}','${v.paiement||'non-paye'}')" title="Changer le paiement">${payBadge(v.paiement)}</td>
           <td style="text-align:center">${mb}</td>
           <td onclick="event.stopPropagation()"><div class="row-actions"><button class="icon-btn fiche-btn" title="Fiche détaillée" onclick="openFiche('${v.id}')">📋</button><button class="icon-btn" title="Modifier" onclick="openEdit('${v.id}')">✏️</button>${delBtn}</div></td>
         </tr>`;
@@ -1038,6 +1040,43 @@
     }
   }
 
+  let _payMenuVehicleId = null;
+
+  window.openPayMenu = function(e, vehicleId, currentPay) {
+    _payMenuVehicleId = vehicleId;
+    const menu = document.getElementById('pay-menu');
+    menu.querySelectorAll('.status-menu-item').forEach((el, i) => {
+      const vals = ['non-paye','carte','alma','gratuit','litige'];
+      el.classList.toggle('current', vals[i] === currentPay);
+    });
+    const x = e.clientX, y = e.clientY;
+    const menuW = 170, menuH = 200;
+    menu.style.left = (x + menuW > window.innerWidth ? x - menuW : x) + 'px';
+    menu.style.top = (y + menuH > window.innerHeight ? y - menuH : y + 8) + 'px';
+    menu.classList.add('active');
+    setTimeout(() => document.addEventListener('click', closePayMenu, {once:true}), 10);
+  }
+
+  function closePayMenu() {
+    document.getElementById('pay-menu').classList.remove('active');
+  }
+
+  window.setPay = async function(newPay) {
+    closePayMenu();
+    if(!_payMenuVehicleId) return;
+    const id = _payMenuVehicleId;
+    try {
+      await updateDoc(doc(db,'vehicles',id), {
+        paiement: newPay,
+        modifiedBy: currentUser,
+        updatedAt: new Date().toISOString()
+      });
+      showToast('💳 Paiement mis à jour !');
+    } catch(e) {
+      showToast('❌ Erreur : ' + e.message, 'error');
+    }
+  }
+
   window.copyTel = function() {
     if(!currentSmsTel) return;
     navigator.clipboard.writeText(currentSmsTel).then(()=>{
@@ -1233,6 +1272,15 @@
     <div class="status-menu-item" onclick="setStatus('pieces-recues')">✅ Pièces reçues</div>
     <div class="status-menu-item" onclick="setStatus('termine')">🏁 Terminé</div>
     <div class="status-menu-item" onclick="setStatus('restitue')">🚗 Restitué</div>
+  </div>
+
+  <!-- PAY QUICK MENU -->
+  <div class="status-menu" id="pay-menu">
+    <div class="status-menu-item" onclick="setPay('non-paye')">💸 Non payé</div>
+    <div class="status-menu-item" onclick="setPay('carte')">💳 Carte</div>
+    <div class="status-menu-item" onclick="setPay('alma')">🔄 Alma</div>
+    <div class="status-menu-item" onclick="setPay('gratuit')">🎁 Gratuit</div>
+    <div class="status-menu-item" onclick="setPay('litige')">⚠️ Litige</div>
   </div>
 
 </body>
