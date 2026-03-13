@@ -851,6 +851,13 @@
   window.renderTable = function() {
     const q=document.getElementById('search').value.toLowerCase();
     const f=document.getElementById('filter').value;
+    // Sort by manual position if set, else by createdAt desc
+    vehicles.sort((a,b)=>{
+      if(a.position !== undefined && b.position !== undefined) return a.position - b.position;
+      if(a.position !== undefined) return -1;
+      if(b.position !== undefined) return 1;
+      return 0;
+    });
     let filtered=vehicles.filter(v=>{
       const mq=(v.immat||'').toLowerCase().includes(q)||(v.client||'').toLowerCase().includes(q)||(v.model||'').toLowerCase().includes(q)||(v.tel||'').replace(/\s/g,'').includes(q.replace(/\s/g,''));
       if(!mq) return false;
@@ -893,7 +900,7 @@
           <td><span class="td-meca">${v.meca||'—'}</span></td>
           <td style="text-align:center;cursor:pointer" onclick="event.stopPropagation();openPayMenu(event,this)" data-id="${v.id}" data-pay="${v.paiement||'non-paye'}">${payBadge(v.paiement)}</td>
           <td style="text-align:center">${mb}</td>
-          <td onclick="event.stopPropagation()"><div class="row-actions"><button class="icon-btn fiche-btn" title="Fiche détaillée" onclick="openFiche('${v.id}')">📋</button><button class="icon-btn" title="Modifier" onclick="openEdit('${v.id}')">✏️</button>${delBtn}</div></td>
+          <td onclick="event.stopPropagation()"><div class="row-actions"><button class="icon-btn" title="Monter" onclick="event.stopPropagation();moveRow('${v.id}',-1)">↑</button><button class="icon-btn" title="Descendre" onclick="event.stopPropagation();moveRow('${v.id}',1)">↓</button><button class="icon-btn fiche-btn" title="Fiche détaillée" onclick="openFiche('${v.id}')">📋</button><button class="icon-btn" title="Modifier" onclick="openEdit('${v.id}')">✏️</button>${delBtn}</div></td>
         </tr>`;
       }).join('');
     }
@@ -1126,6 +1133,40 @@
       });
     } catch(e) {
       showToast('❌ Erreur : ' + e.message, 'error');
+    }
+  }
+
+  window.moveRow = async function(id, direction) {
+    // Get current filtered+sorted list
+    const f = document.getElementById('filter').value;
+    const q = document.getElementById('search').value.toLowerCase();
+    let visible = vehicles.filter(v => {
+      if(f === 'actif') return !['restitue'].includes(v.status);
+      if(f) return v.status === f;
+      return true;
+    });
+
+    const idx = visible.findIndex(v => v.id === id);
+    const swapIdx = idx + direction;
+    if(swapIdx < 0 || swapIdx >= visible.length) return;
+
+    const a = visible[idx];
+    const b = visible[swapIdx];
+
+    // Assign positions to all if not set
+    if(vehicles.some(v => v.position === undefined)) {
+      vehicles.forEach((v, i) => { if(v.position === undefined) v.position = i * 10; });
+    }
+
+    // Swap positions
+    const posA = a.position !== undefined ? a.position : idx * 10;
+    const posB = b.position !== undefined ? b.position : swapIdx * 10;
+
+    try {
+      await updateDoc(doc(db, 'vehicles', a.id), { position: posB });
+      await updateDoc(doc(db, 'vehicles', b.id), { position: posA });
+    } catch(e) {
+      showToast('❌ ' + e.message, 'error');
     }
   }
 
