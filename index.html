@@ -115,19 +115,18 @@
   .status-menu-item:hover{background:rgba(255,255,255,0.06);}
   .status-menu-item.current{background:rgba(255,140,42,0.1);color:var(--accent);}
   .badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:20px;font-size:11px;font-weight:500;font-family:var(--font-mono);white-space:nowrap;}
-  .badge-dot{width:5px;height:5px;border-radius:50%;}
   .badge.attente{background:rgba(107,114,128,0.15);color:var(--muted);border:1px solid rgba(107,114,128,0.25);}
-  .badge.attente .badge-dot{background:var(--muted);}
+  /* .badge.attente .badge-dot{background:var(--muted);}
   .badge.en-cours{background:rgba(255,140,42,0.12);color:var(--accent);border:1px solid rgba(255,140,42,0.25);}
-  .badge.en-cours .badge-dot{background:var(--accent);animation:pulse 1.5s infinite;}
+  /* .badge.en-cours .badge-dot{background:var(--accent);animation:pulse 1.5s infinite;} */
   .badge.pieces{background:rgba(255,181,71,0.12);color:var(--warning);border:1px solid rgba(255,181,71,0.25);}
-  .badge.pieces .badge-dot{background:var(--warning);}
+  /* .badge.pieces .badge-dot{background:var(--warning);}
   .badge.termine{background:rgba(77,255,180,0.1);color:var(--success);border:1px solid rgba(77,255,180,0.2);}
-  .badge.termine .badge-dot{background:var(--success);}
+  /* .badge.termine .badge-dot{background:var(--success);}
   .badge.restitue{background:rgba(71,184,255,0.1);color:var(--accent2);border:1px solid rgba(71,184,255,0.2);}
-  .badge.restitue .badge-dot{background:var(--accent2);}
+  /* .badge.restitue .badge-dot{background:var(--accent2);}
   .badge.pieces-recues{background:rgba(52,211,153,0.12);color:#34d399;border:1px solid rgba(52,211,153,0.25);}
-  .badge.pieces-recues .badge-dot{background:#34d399;}
+  /* .badge.pieces-recues .badge-dot{background:#34d399;}
   .modif-tag{font-family:var(--font-mono);font-size:9px;padding:2px 7px;border-radius:4px;display:inline-block;}
   .modif-tag.Morad{background:rgba(255,140,42,0.15);color:var(--accent);}
   .modif-tag.Bureau{background:rgba(71,184,255,0.15);color:var(--accent2);}
@@ -755,7 +754,10 @@
   }
 
 
-  function badge(s){return `<span class="badge ${s}"><span class="badge-dot"></span>${statusLabels[s]||s}</span>`;}
+  function badge(s){
+    const icons={attente:'⏳','en-cours':'🔧',pieces:'📦','pieces-recues':'✅',termine:'🏁',restitue:'🚗'};
+    return `<span class="badge ${s}" style="cursor:pointer">${icons[s]||'•'} ${statusLabels[s]||s}</span>`;
+  }
   function isUrgent(d){return d&&(new Date(d)-new Date())/86400000<=1;}
 
   // ── RENDER TABLE ─────────────────────────────────────────────────────────────
@@ -802,7 +804,7 @@
             <div class="td-sub td-copy td-tel" onclick="copyText('${v.tel||''}');event.stopPropagation();" title="Copier le numéro">${v.tel||''}</div>
           </td>
           <td><span class="td-meca">${v.meca||'—'}</span></td>
-          <td style="text-align:center">${payBadge(v.paiement)}</td>
+          <td style="text-align:center" onclick="event.stopPropagation();openPayMenu(event,'${v.id}','${v.paiement||'non-paye'}')" title="Changer le paiement">${payBadge(v.paiement)}</td>
           <td style="text-align:center">${mb}</td>
           <td onclick="event.stopPropagation()"><div class="row-actions"><button class="icon-btn fiche-btn" title="Fiche détaillée" onclick="openFiche('${v.id}')">📋</button><button class="icon-btn" title="Modifier" onclick="openEdit('${v.id}')">✏️</button>${delBtn}</div></td>
         </tr>`;
@@ -1038,6 +1040,43 @@
     }
   }
 
+  let _payMenuVehicleId = null;
+
+  window.openPayMenu = function(e, vehicleId, currentPay) {
+    _payMenuVehicleId = vehicleId;
+    const menu = document.getElementById('pay-menu');
+    menu.querySelectorAll('.status-menu-item').forEach((el, i) => {
+      const vals = ['non-paye','carte','alma','gratuit','litige'];
+      el.classList.toggle('current', vals[i] === currentPay);
+    });
+    const x = e.clientX, y = e.clientY;
+    const menuW = 170, menuH = 200;
+    menu.style.left = (x + menuW > window.innerWidth ? x - menuW : x) + 'px';
+    menu.style.top = (y + menuH > window.innerHeight ? y - menuH : y + 8) + 'px';
+    menu.classList.add('active');
+    setTimeout(() => document.addEventListener('click', closePayMenu, {once:true}), 10);
+  }
+
+  function closePayMenu() {
+    document.getElementById('pay-menu').classList.remove('active');
+  }
+
+  window.setPay = async function(newPay) {
+    closePayMenu();
+    if(!_payMenuVehicleId) return;
+    const id = _payMenuVehicleId;
+    try {
+      await updateDoc(doc(db,'vehicles',id), {
+        paiement: newPay,
+        modifiedBy: currentUser,
+        updatedAt: new Date().toISOString()
+      });
+      showToast('💳 Paiement mis à jour !');
+    } catch(e) {
+      showToast('❌ Erreur : ' + e.message, 'error');
+    }
+  }
+
   window.copyTel = function() {
     if(!currentSmsTel) return;
     navigator.clipboard.writeText(currentSmsTel).then(()=>{
@@ -1233,6 +1272,15 @@
     <div class="status-menu-item" onclick="setStatus('pieces-recues')">✅ Pièces reçues</div>
     <div class="status-menu-item" onclick="setStatus('termine')">🏁 Terminé</div>
     <div class="status-menu-item" onclick="setStatus('restitue')">🚗 Restitué</div>
+  </div>
+
+  <!-- PAY QUICK MENU -->
+  <div class="status-menu" id="pay-menu">
+    <div class="status-menu-item" onclick="setPay('non-paye')">💸 Non payé</div>
+    <div class="status-menu-item" onclick="setPay('carte')">💳 Carte</div>
+    <div class="status-menu-item" onclick="setPay('alma')">🔄 Alma</div>
+    <div class="status-menu-item" onclick="setPay('gratuit')">🎁 Gratuit</div>
+    <div class="status-menu-item" onclick="setPay('litige')">⚠️ Litige</div>
   </div>
 
 </body>
