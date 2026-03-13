@@ -832,7 +832,7 @@
     if(!immat){const el=document.getElementById('n-immat');el.style.borderColor='var(--danger)';el.focus();setTimeout(()=>el.style.borderColor='',1500);return;}
     try{
       await addDoc(vehiclesRef,{
-        immat,model:document.getElementById('n-model').value.trim(),
+        immat,model:(document.getElementById('n-marque').value+' '+(document.getElementById('n-modele-autre')&&document.getElementById('n-modele-autre').style.display!='none'?document.getElementById('n-modele-autre').value:document.getElementById('n-modele').value)).trim(),
         km:document.getElementById('n-km').value,
         arrive:document.getElementById('n-arrive').value,
         dateArrive:document.getElementById('n-date-arrive').value,
